@@ -1,8 +1,12 @@
+import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import React, { ReactNode } from "react";
 
-const RootLayout = ({ children }: { children: ReactNode }) => {
+const RootLayout = async ({ children }: { children: ReactNode }) => {
+  const session = await getServerSession();
+  if (!session) redirect("/sign-in");
   return (
     <div className="root-layout">
       <nav>
