@@ -10,6 +10,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
           <Image src={"/logo.svg"} alt="Logo" height={32} width={38} />
           <h2 className="text-primary-100">PrepInterView</h2>
         </Link>
+        <Link href={"/api/auth/signout"}>Logout</Link>
       </nav>
       {children}
     </div>
