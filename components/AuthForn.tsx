@@ -42,6 +42,7 @@ const AuthForn = ({ type }: { type: FormType }) => {
     try {
       if (type === "sign-in") {
         toast.success("Sign in success");
+        console.log(values);
         push("/");
       }
     } catch (error) {
