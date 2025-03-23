@@ -10,6 +10,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import FormField from "./FormField";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 type FormType = "sign-in" | "sign-up";
 
@@ -100,6 +101,15 @@ const AuthForn = ({ type }: { type: FormType }) => {
             </p>
           </form>
         </Form>
+        <Button onClick={() => signIn("google")}>
+          {isSignIn ? "Sign in with google" : "Sign up with google"}
+          <Image
+            src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg"
+            height={25}
+            width={25}
+            alt="google"
+          />
+        </Button>
       </div>
     </div>
   );
