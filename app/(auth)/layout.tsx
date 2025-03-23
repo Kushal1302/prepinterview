@@ -6,7 +6,7 @@ const AuthLayout = async ({ children }: { children: ReactNode }) => {
   const session = await getServerSession();
   console.log(session);
   if (session) redirect("/");
-  return <div className="auth-layout">{children}</div>;
+  return <div className="auth-layout" suppressHydrationWarning>{children}</div>;
 };
 
 export default AuthLayout;
