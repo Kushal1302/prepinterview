@@ -1,11 +1,11 @@
-import { getServerSession } from "next-auth";
+import { getServerAuthSessions } from "@/actions/auth";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React, { ReactNode } from "react";
 
 const RootLayout = async ({ children }: { children: ReactNode }) => {
-  const session = await getServerSession();
+  const session = await getServerAuthSessions();
   if (!session) redirect("/sign-in");
   return (
     <div className="root-layout" suppressHydrationWarning>

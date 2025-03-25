@@ -1,17 +1,33 @@
-import { NextAuthOptions } from "next-auth";
+import { DefaultSession, getServerSession, NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { PrismaClient } from "@prisma/client";
 
 declare module "next-auth" {
-  interface Session {
+  interface Session extends DefaultSession {
     user: {
-      id?: string; // Add custom field to session.user
-      name?: string;
-      email?: string;
+      id?: User["id"]; // Add custom field to session.user
+      name?: User["name"];
+      email?: User["email"];
       image?: string;
+      sub?: string;
     };
   }
 }
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    id: User["id"];
+    name?: User["name"];
+    email?: User["email"];
+    picture?: string;
+  }
+}
+
+const prisma = new PrismaClient();
+
 export const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma),
   // Configure one or more authentication providers
   providers: [
     GoogleProvider({
@@ -28,17 +44,36 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id; // Add user ID to token
+        const dbUser = await prisma.user.findUnique({
+          where: {
+            id: user.id,
+          },
+        });
+        if (dbUser) {
+          token.id = dbUser.id;
+          token.name = dbUser.name || undefined;
+          token.email = dbUser.email || undefined;
+          token.picture = dbUser.image || undefined;
+        }
       }
+      console.log(token);
       return token;
     },
     // Session callback: Called when session is accessed
     async session({ session, token }) {
+      console.log("Token in session:", token);
       if (token && session.user) {
-        session.user.id = token.id as string; // Add ID to session.user
+        session.user.id = token.id as string;
+        session.user.name = token.name as string;
+        session.user.email = token.email as string;
+        session.user.image = token.picture as string;
+        session.user.sub = token.sub as string;
       }
+      console.log(session);
       return session;
     },
   },
 };
 export default authOptions;
+
+export const getServerAuthSessions = () => getServerSession(authOptions);
