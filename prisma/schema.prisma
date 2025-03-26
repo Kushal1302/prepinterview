@@ -45,6 +45,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   Interviews    Interviews[]
+  Feedback      Feedback[]
 }
 
 model VerificationToken {
@@ -67,6 +68,23 @@ model Interviews {
   coverImage String
   level      String
   questions  String[]
+
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Feedback  Feedback[]
+}
+
+model Feedback {
+  id                  String     @id @default(auto()) @map("_id") @db.ObjectId
+  totalScore          Int
+  interviewId         String     @db.ObjectId
+  interview           Interviews @relation(fields: [interviewId], references: [id])
+  userId              String     @db.ObjectId
+  user                User       @relation(fields: [userId], references: [id])
+  strengths           String[]
+  areasForImprovement String[]
+  finalAssessment     String
+  categoryScores      Json
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

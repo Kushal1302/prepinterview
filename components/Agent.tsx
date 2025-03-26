@@ -1,4 +1,6 @@
 "use client";
+import { createFeedback } from "@/actions/db";
+import { interviewer } from "@/constants";
 import { cn } from "@/lib/utils";
 import { vapi } from "@/lib/vapi.sdk";
 import Image from "next/image";
@@ -17,7 +19,14 @@ interface SavedMessage {
   content: string;
 }
 
-const Agent = ({ userName, userId, type }: AgentProps) => {
+const Agent = ({
+  userName,
+  userId,
+  type,
+  userImage,
+  interviewId,
+  questions,
+}: AgentProps) => {
   const { push } = useRouter();
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
@@ -53,19 +62,55 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
     };
   }, []);
 
+  const handleGenerateFeedback = async (messages: SavedMessage[]) => {
+    console.log("Generated feedback", messages);
+
+    const { success, feedbackId: id } = await createFeedback({
+      interviewId: interviewId ?? "",
+      userId: userId ?? "",
+      transcript: messages,
+    });
+    if (success && id) {
+      push(`/interview/${interviewId}/feedback`);
+    } else {
+      push("/");
+    }
+  };
+
   useEffect(() => {
-    if (callStatus === CallStatus.FINISHED) push("/");
+    if (callStatus === CallStatus.FINISHED) {
+      if (type === "generate") {
+        push("/");
+      } else {
+        handleGenerateFeedback(messages);
+      }
+    }
   }, [messages, callStatus, type, userId]);
 
   // handling call
   const handleCall = async () => {
     setCallStatus(CallStatus.CONNECTING);
-    await vapi.start(process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID, {
-      variableValues: {
-        username: userName,
-        userid: userId,
-      },
-    });
+    if (type === "generate") {
+      await vapi.start(process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID, {
+        variableValues: {
+          username: userName,
+          userid: userId,
+        },
+      });
+    } else {
+      let formattedQuestions = "";
+      if (questions) {
+        formattedQuestions = questions
+          .map((question) => `-${question}`)
+          .join("\n");
+
+        await vapi.start(interviewer, {
+          variableValues: {
+            questions: formattedQuestions,
+          },
+        });
+      }
+    }
   };
 
   // disconnecting call
@@ -98,7 +143,7 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
         <div className="card-border">
           <div className="card-content">
             <Image
-              src={"/user-avatar.png"}
+              src={userImage ?? "/user-avatar.png"}
               width={540}
               height={540}
               className="rounded-full object-cover size-[120px]"
