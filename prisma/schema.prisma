@@ -36,14 +36,15 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
   name          String?
-  email         String?   @unique
+  email         String?      @unique
   emailVerified DateTime?
   image         String?
   password      String?
   accounts      Account[]
   sessions      Session[]
+  Interviews    Interviews[]
 }
 
 model VerificationToken {
@@ -53,4 +54,20 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Interviews {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String   @db.ObjectId
+  user       User     @relation(fields: [userId], references: [id])
+  role       String
+  type       String
+  techstack  String[]
+  finalized  Boolean
+  coverImage String
+  level      String
+  questions  String[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
