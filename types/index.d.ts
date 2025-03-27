@@ -1,5 +1,6 @@
 interface Feedback {
   id: string;
+  userId: string;
   interviewId: string;
   totalScore: number;
   categoryScores: Array<{
@@ -14,6 +15,7 @@ interface Feedback {
 }
 
 interface Interview {
+  Feedback?: Partial<{ userId: string }[]> | undefined;
   id: string;
   role: string;
   level: string;
