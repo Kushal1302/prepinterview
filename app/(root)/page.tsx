@@ -45,6 +45,11 @@ export default async function Home() {
                 {...interview}
                 key={interview.id}
                 userId={session?.user.id ?? ""}
+                feedback={
+                  interview?.Feedback?.find(
+                    (feed) => feed?.userId === session?.user.id
+                  )?.userId == session?.user.id
+                }
               />
             ))
           ) : (
@@ -62,6 +67,9 @@ export default async function Home() {
                 {...interview}
                 key={interview.id}
                 userId={session?.user.id ?? ""}
+                feedback={interview?.Feedback?.find(
+                  (feed) => feed?.userId === session?.user.id
+                )?.userId == session?.user.id}
               />
             ))
           ) : (

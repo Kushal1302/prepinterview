@@ -13,6 +13,7 @@ interface InterViewProps {
   type: string;
   createdAt: Date;
   coverImage: string;
+  feedback: boolean;
 }
 
 const InterviewCard = ({
@@ -22,9 +23,9 @@ const InterviewCard = ({
   type,
   createdAt,
   coverImage,
+  feedback,
 }: InterViewProps) => {
   const formattedDate = dayjs(createdAt || Date.now()).format("MMM D, YYYY");
-  const feedback = null as Feedback | null;
   return (
     <div className="card-border w-[360px] max-sm:w-full min-h-96">
       <div className="card-interview">

@@ -2,6 +2,7 @@ import { DefaultSession, getServerSession, NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
+import { sendWelcomeEmail } from "@/lib/email";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
@@ -42,6 +43,23 @@ export const authOptions: NextAuthOptions = {
     updateAge: 24 * 60 * 60, // Update session every 24 hours
   },
   callbacks: {
+    async signIn({ user }) {
+      // Check if this is the user's first sign-in
+      const existingUser = await prisma.user.findUnique({
+        where: { email: user.email! },
+      });
+
+      if (!existingUser) {
+        // New user: Prisma adapter will create the user after this callback
+        // We can't update welcomeEmailSent yet, so send sign-up email here
+        await sendWelcomeEmail(user.email!, user.name || "User", true);
+      } else {
+        // Returning user: Send "Welcome Back" email
+        await sendWelcomeEmail(user.email!, user.name || "User", false);
+      }
+
+      return true; // Allow sign-in
+    },
     async jwt({ token, user }) {
       if (user) {
         const dbUser = await prisma.user.findUnique({
@@ -56,12 +74,10 @@ export const authOptions: NextAuthOptions = {
           token.picture = dbUser.image || undefined;
         }
       }
-      console.log(token);
       return token;
     },
     // Session callback: Called when session is accessed
     async session({ session, token }) {
-      console.log("Token in session:", token);
       if (token && session.user) {
         session.user.id = token.id as string;
         session.user.name = token.name as string;
@@ -69,7 +85,6 @@ export const authOptions: NextAuthOptions = {
         session.user.image = token.picture as string;
         session.user.sub = token.sub as string;
       }
-      console.log(session);
       return session;
     },
   },
