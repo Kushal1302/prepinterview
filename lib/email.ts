@@ -47,7 +47,7 @@ export const sendWelcomeEmail = async (
         </p>
         <a href="${
           process.env.NEXTAUTH_URL
-        }/dashboard" style="display: inline-block; padding: 12px 24px; background-color: #CAC5FE; color: #08090D; font-weight: bold; text-decoration: none; border-radius: 25px; margin-top: 20px;">
+        }/" style="display: inline-block; padding: 12px 24px; background-color: #CAC5FE; color: #08090D; font-weight: bold; text-decoration: none; border-radius: 25px; margin-top: 20px;">
           Go to Dashboard
         </a>
       </div>
