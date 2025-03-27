@@ -101,12 +101,12 @@ const AuthForn = ({ type }: { type: FormType }) => {
             </p>
           </form>
         </Form>
-        <Button onClick={() => signIn("google")}>
+        <Button onClick={() => signIn("google")} className="btn-primary w-full">
           {isSignIn ? "Sign in with google" : "Sign up with google"}
           <Image
             src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg"
-            height={25}
-            width={25}
+            height={20}
+            width={20}
             alt="google"
           />
         </Button>

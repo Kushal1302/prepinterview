@@ -16,6 +16,13 @@ export const getInterviewsByUserId = async (
     orderBy: {
       createdAt: "desc",
     },
+    include: {
+      Feedback: {
+        select: {
+          userId: true,
+        },
+      },
+    },
   });
   return interviews;
 };
@@ -32,6 +39,13 @@ export const getLatestInterviews = async (
       finalized: true,
     },
     take: limit,
+    include: {
+      Feedback: {
+        select: {
+          userId: true,
+        },
+      },
+    },
   });
   return interviews;
 };
