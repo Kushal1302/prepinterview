@@ -23,9 +23,14 @@ export default async function Home() {
         <div className="flex flex-col gap-6 max-w-lg">
           <h2>Get Interview Ready with AI-Powered Practice & Feedback</h2>
           <p>Practice on real interview questions and get instant feedback</p>
-          <Button asChild className="max-sm:w-full btn-primary">
-            <Link href={"/interview"}>Start an interview</Link>
-          </Button>
+          <div className="flex flex-row gap-3">
+            <Button asChild className="max-sm:w-full btn-primary">
+              <Link href={"/interview"}>Start an interview</Link>
+            </Button>
+            {/* <Button asChild className="max-sm:w-full btn-primary">
+              <Link href={"/interview"}>Check your resume score</Link>
+            </Button> */}
+          </div>
         </div>
         <Image
           src={"/robot.png"}
@@ -67,9 +72,11 @@ export default async function Home() {
                 {...interview}
                 key={interview.id}
                 userId={session?.user.id ?? ""}
-                feedback={interview?.Feedback?.find(
-                  (feed) => feed?.userId === session?.user.id
-                )?.userId == session?.user.id}
+                feedback={
+                  interview?.Feedback?.find(
+                    (feed) => feed?.userId === session?.user.id
+                  )?.userId == session?.user.id
+                }
               />
             ))
           ) : (

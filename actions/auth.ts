@@ -1,7 +1,7 @@
 import { DefaultSession, getServerSession, NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Subscription } from "@prisma/client";
 import { sendWelcomeEmail } from "@/lib/email";
 
 declare module "next-auth" {
@@ -12,6 +12,7 @@ declare module "next-auth" {
       email?: User["email"];
       image?: string;
       sub?: string;
+      subscription?: Subscription;
     };
   }
 }
@@ -47,6 +48,7 @@ export const authOptions: NextAuthOptions = {
       // Check if this is the user's first sign-in
       const existingUser = await prisma.user.findUnique({
         where: { email: user.email! },
+        include: { Subscription: true },
       });
 
       if (!existingUser) {
@@ -78,12 +80,28 @@ export const authOptions: NextAuthOptions = {
     },
     // Session callback: Called when session is accessed
     async session({ session, token }) {
+      let subscription = await prisma.subscription.findUnique({
+        where: { userId: token.id },
+      });
+
+      if (!subscription) {
+        subscription = await prisma.subscription.create({
+          data: {
+            userId: token.id,
+            plan: "free",
+            interviewsCreated: 0,
+            interviewsTaken: 0,
+          },
+        });
+      }
       if (token && session.user) {
+        // Check if subscription exists, create if not
         session.user.id = token.id as string;
         session.user.name = token.name as string;
         session.user.email = token.email as string;
         session.user.image = token.picture as string;
         session.user.sub = token.sub as string;
+        session.user.subscription = subscription;
       }
       return session;
     },
