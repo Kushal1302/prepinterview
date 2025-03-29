@@ -91,16 +91,28 @@ export const createFeedback = async (params: CreateFeedbackParams) => {
       system: "You are a professional interviewer.",
     });
 
-    const feedback = await prisma.feedback.create({
-      data: {
-        userId,
-        interviewId,
-        categoryScores: object.categoryScores,
-        areasForImprovement: object.areasForImprovement,
-        totalScore: object.totalScore,
-        finalAssessment: object.finalAssessment,
-      },
-    });
+    const [feedback] = await prisma.$transaction([
+      prisma.feedback.create({
+        data: {
+          userId,
+          interviewId,
+          categoryScores: object.categoryScores,
+          areasForImprovement: object.areasForImprovement,
+          totalScore: object.totalScore,
+          finalAssessment: object.finalAssessment,
+        },
+      }),
+      prisma.subscription.update({
+        where: {
+          userId,
+        },
+        data: {
+          interviewsTaken: {
+            increment: 1,
+          },
+        },
+      }),
+    ]);
 
     return {
       success: true,
