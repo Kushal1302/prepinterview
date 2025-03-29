@@ -1,6 +1,118 @@
-PrepInterviewPrepInterview is an AI-powered interview assistant designed to help users prepare for interviews by creating and practicing custom interviews. Users can design their own interview scenarios, share them with others, and even participate in AI-driven mock interviews. Whether you're a job seeker or a professional looking to sharpen your skills, PrepInterview has you covered!FeaturesCreate Custom Interviews: Build your own interview questions and scenarios tailored to your needs.Public Visibility: Share your interviews with the community for others to practice.AI-Powered Mock Interviews: Practice with an intelligent AI assistant that simulates real interview experiences.Modern Tech Stack: Built with cutting-edge technologies for a smooth and responsive user experience.Tech StackFrontend: Next.js (React framework), TypeScript, Tailwind CSS, Shadcn UIBackend: MongoDB with Prisma ORMAI Integration: Google Gemini for AI capabilities, VAPI AI Assistant for voice-based interactionsGetting StartedPrerequisitesNode.js (v16 or higher)MongoDB (local or cloud instance)API keys for Google Gemini and VAPI AI AssistantInstallationClone the repository:git clone https://github.com/your-username/prepinterview.git
-cd prepinterviewInstall dependencies:npm installSet up environment variables: Create a .env file in the root directory and add the following:DATABASE_URL="your-mongodb-connection-string"
-GOOGLE_GEMINI_API_KEY="your-google-gemini-api-key"
-VAPI_API_KEY="your-vapi-ai-assistant-key"
-NEXT_PUBLIC_BASE_URL="http://localhost:3000"Run the development server:npm run devOpen http://localhost:3000 in your browser to see the app in action.Building for ProductionTo create an optimized production build:npm run build
-npm run startUsageCreate an Interview: Log in, navigate to the "Create Interview" section, and design your custom interview with specific questions or topics.Share Your Interview: Once created, your interview will be visible to all users on the platform.Practice with AI: Select an interview (yours or someone else’s) and start a mock session with the AI assistant powered by Google Gemini and VAPI.ContributingWe welcome contributions! To get started:Fork the repository.Create a new branch (git checkout -b feature/your-feature-name).Commit your changes (git commit -m "Add your message").Push to the branch (git push origin feature/your-feature-name).Open a pull request.LicenseThis project is licensed under the MIT License - see the LICENSE file for details.ContactFor questions or feedback, feel free to reach out:Email: your-email@example.comTwitter: @yourusername
+# PrepInterview - AI Powered Interview Assistant
+
+## 🚀 About the Project
+PrepInterview is an AI-powered interview assistant designed to help candidates prepare effectively for technical and behavioral interviews. It leverages cutting-edge AI models to generate customized interview questions based on user input and provides a seamless and interactive experience.
+
+## 🛠 Tech Stack
+- **Framework:** Next.js (React, Server Components, API Routes)
+- **Programming Language:** TypeScript
+- **Database:** Prisma ORM with MongoDB
+- **Styling:** Tailwind CSS
+- **UI Components:** ShadCN UI
+- **AI Models:** Vapi AI Agent, Google Gemini
+
+## 🎨 Design Language
+The UI follows a modern and minimalistic approach, ensuring a smooth and intuitive user experience. The design is optimized for:
+- Dark & Light mode compatibility
+- Responsive layouts for all screen sizes
+- Clean typography and spacing
+- Accessibility best practices
+
+## 📂 Project Structure
+```
+/ PrepInterview
+├── /app             # Next.js App Router
+├── /components      # Reusable UI Components
+├── /styles         # Global & Component-specific styles
+├── /lib            # Utility functions and AI integrations
+├── /prisma         # Database schema and migrations
+├── /pages          # API routes and static pages
+├── /public         # Static assets
+└── /env            # Environment variables
+```
+
+## 🔧 Installation & Setup
+### Prerequisites
+- Node.js (Latest LTS)
+- MongoDB Database
+- Google Gemini API Key
+- Vapi AI Agent Key
+
+### Steps to Run Locally
+1. **Clone the repository**
+   ```sh
+   git clone https://github.com/yourusername/PrepInterview.git
+   cd PrepInterview
+   ```
+2. **Install dependencies**
+   ```sh
+   npm install
+   # or
+   yarn install
+   ```
+3. **Set up environment variables** (Create `.env.local` and add required keys)
+4. **Run the development server**
+   ```sh
+   npm run dev
+   ```
+5. **Open the project** in your browser at `http://localhost:3000`
+
+## 🌟 Features
+- **AI-Powered Question Generation** using Google Gemini
+- **Real-time Interview Simulations** with Vapi AI Agent
+- **Customizable Interview Topics & Difficulty Levels**
+- **Save & Review Past Interviews**
+- **Modern UI with ShadCN Components**
+
+## 📜 Environment Variables
+Ensure you set up the following in your `.env.local` file:
+```env
+# NEXT AUTH CREDENTIALS
+
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=""
+
+# GOOGLE CREDENTIALS
+
+GOOGLE_ID=""
+GOOGLE_SECRET=""
+GOOGLE_GENERATIVE_AI_API_KEY=""
+
+
+# VAPI CREDENTIALS
+
+NEXT_PUBLIC_VAPI_WEB_TOKEN=""
+NEXT_PUBLIC_VAPI_WORKFLOW_ID=""
+
+# DATABASE_URL
+
+DATABASE_URL=""
+
+# EMAIL CREDENTIALS
+
+EMAIL_HOST=""
+EMAIL_PASS=""
+EMAIL_USER=""
+
+
+NEXT_PUBLIC_INTERVIEW_CREATED_FREE=2
+NEXT_PUBLIC_INTERVIEW_TAKEN_FREE=3
+NEXT_PUBLIC_INTERVIEW_CREATED_PREMIUM=5
+NEXT_PUBLIC_INTERVIEW_TAKEN_PREMIUM=7
+```
+
+## 🔗 Contributing
+We welcome contributions! If you'd like to contribute, please:
+1. Fork the repository
+2. Create a new branch (`feature-branch-name`)
+3. Commit your changes
+4. Push to your fork and create a pull request
+
+## 📜 License
+This project is licensed under the MIT License.
+
+## 📬 Contact
+For any queries, feel free to reach out via:
+- **GitHub Issues**: [Repo Issues](https://github.com/Kushal1302/prepinterview/issues)
+- **Email**: kushalmalviya1302@gmail.com
+
