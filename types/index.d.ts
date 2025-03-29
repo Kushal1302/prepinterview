@@ -1,5 +1,6 @@
 interface Feedback {
   id: string;
+  userId: string;
   interviewId: string;
   totalScore: number;
   categoryScores: Array<{
@@ -10,19 +11,21 @@ interface Feedback {
   strengths: string[];
   areasForImprovement: string[];
   finalAssessment: string;
-  createdAt: string;
+  createdAt: Date;
 }
 
 interface Interview {
+  Feedback?: Partial<{ userId: string }[]> | undefined;
   id: string;
   role: string;
   level: string;
   questions: string[];
   techstack: string[];
-  createdAt: string;
+  createdAt: Date;
   userId: string;
   type: string;
   finalized: boolean;
+  coverImage: string;
 }
 
 interface CreateFeedbackParams {
@@ -54,6 +57,7 @@ interface AgentProps {
   feedbackId?: string;
   type: "generate" | "interview";
   questions?: string[];
+  userImage?: string;
 }
 
 interface RouteParams {

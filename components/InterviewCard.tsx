@@ -4,7 +4,6 @@ import Image from "next/image";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import DisplayTechIcons from "./DisplayTechIcons";
-import { getRandomInterviewCover } from "@/lib/utils";
 
 interface InterViewProps {
   interviewId: string;
@@ -12,18 +11,20 @@ interface InterViewProps {
   role: string;
   techstack: string[];
   type: string;
-  createdAt: string;
+  createdAt: Date;
+  coverImage: string;
+  feedback: boolean;
 }
 
 const InterviewCard = ({
   interviewId,
-  userId,
   role,
   techstack,
   type,
   createdAt,
+  coverImage,
+  feedback,
 }: InterViewProps) => {
-  console.log(userId);
   const formattedDate = dayjs(createdAt || Date.now()).format("MMM D, YYYY");
   return (
     <div className="card-border w-[360px] max-sm:w-full min-h-96">
@@ -33,7 +34,7 @@ const InterviewCard = ({
             <p className="badge-text">{type}</p>
           </div>
           <Image
-            src={getRandomInterviewCover()}
+            src={coverImage}
             alt="cover"
             height={90}
             className="rounded-full object-fit size-[90px]"
@@ -58,8 +59,14 @@ const InterviewCard = ({
         <div className="flex flex-row justify-between">
           <DisplayTechIcons techStack={techstack} />
           <Button className="btn-primary">
-            <Link href={`/interview/${interviewId}/feedback`}>
-              Check Feedback
+            <Link
+              href={
+                feedback
+                  ? `/interview/${interviewId}/feedback`
+                  : `/interview/${interviewId}`
+              }
+            >
+              {feedback ? `Check Feedback` : `View Interview`}
             </Link>
           </Button>
         </div>

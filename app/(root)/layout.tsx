@@ -1,11 +1,12 @@
-import { getServerSession } from "next-auth";
+import { getServerAuthSessions } from "@/actions/auth";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React, { ReactNode } from "react";
+import { LogOut } from "lucide-react";
 
 const RootLayout = async ({ children }: { children: ReactNode }) => {
-  const session = await getServerSession();
+  const session = await getServerAuthSessions();
   if (!session) redirect("/sign-in");
   return (
     <div className="root-layout" suppressHydrationWarning>
@@ -14,7 +15,9 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
           <Image src={"/logo.svg"} alt="Logo" height={32} width={38} />
           <h2 className="text-primary-100">PrepInterView</h2>
         </Link>
-        <Link href={"/api/auth/signout"}>Logout</Link>
+        <Link title="logout" href={"/api/auth/signout"}>
+          <LogOut/>
+        </Link>
       </nav>
       {children}
     </div>

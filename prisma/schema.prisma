@@ -1,0 +1,104 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Models required by NextAuth
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  sessionToken String   @unique
+  userId       String   @db.ObjectId
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String        @id @default(auto()) @map("_id") @db.ObjectId
+  name          String?
+  email         String?       @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  accounts      Account[]
+  sessions      Session[]
+  Interviews    Interviews[]
+  Feedback      Feedback[]
+  Subscription  Subscription?
+}
+
+model VerificationToken {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Interviews {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String   @db.ObjectId
+  user       User     @relation(fields: [userId], references: [id])
+  role       String
+  type       String
+  techstack  String[]
+  finalized  Boolean
+  coverImage String
+  level      String
+  questions  String[]
+
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Feedback  Feedback[]
+}
+
+model Feedback {
+  id                  String     @id @default(auto()) @map("_id") @db.ObjectId
+  totalScore          Int
+  interviewId         String     @db.ObjectId
+  interview           Interviews @relation(fields: [interviewId], references: [id])
+  userId              String     @db.ObjectId
+  user                User       @relation(fields: [userId], references: [id])
+  strengths           String[]
+  areasForImprovement String[]
+  finalAssessment     String
+  categoryScores      Json
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// New Subscription model
+model Subscription {
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  user              User     @relation(fields: [userId], references: [id])
+  userId            String   @unique @db.ObjectId // One subscription per user
+  plan              String   @default("free") // e.g., "free", "premium"
+  interviewsCreated Int      @default(0) // Track interviews created
+  interviewsTaken   Int      @default(0) // Track interviews taken
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
