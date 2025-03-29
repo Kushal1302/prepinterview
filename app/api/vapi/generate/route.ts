@@ -13,6 +13,48 @@ export async function GET() {
 
 export async function POST(req: Request) {
   const { type, role, level, techstack, amount, userid } = await req.json();
+
+  const userExists = await prisma.user.findUnique({
+    where: {
+      id: userid,
+    },
+    include: {
+      Subscription: {
+        select: {
+          interviewsCreated: true,
+          plan: true,
+        },
+      },
+    },
+  });
+
+  if (!userExists) {
+    return Response.json(
+      { success: false, error: "User not exists" },
+      { status: 401 }
+    );
+  }
+
+  const plan = userExists.Subscription?.plan as "free" | "premium";
+
+  const planLimits = {
+    free: 2,
+    premium: 5,
+  };
+
+  const hasExceededLimit =
+    Number(userExists.Subscription?.interviewsCreated) >= planLimits[plan];
+
+  if (hasExceededLimit) {
+    return Response.json(
+      {
+        success: false,
+        error:
+          "Your interview limit has been exceeded. Please upgrade your plan.",
+      },
+      { status: 401 }
+    );
+  }
   try {
     const { text: questions } = await generateText({
       model: google("gemini-2.0-flash-001"),
@@ -42,9 +84,21 @@ export async function POST(req: Request) {
       coverImage: getRandomInterviewCover(),
     };
 
-    await prisma.interviews.create({
-      data: interview,
-    });
+    await prisma.$transaction([
+      prisma.interviews.create({
+        data: interview,
+      }),
+      prisma.subscription.update({
+        where: {
+          userId: userid,
+        },
+        data: {
+          interviewsCreated: {
+            increment: 1,
+          },
+        },
+      }),
+    ]);
 
     return Response.json({ success: true }, { status: 200 });
   } catch (error) {

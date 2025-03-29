@@ -217,3 +217,17 @@ export const dummyInterviews = [
     createdAt: "2025-03-22T00:00:00Z",
   },
 ];
+
+export const subscriptionLimit = {
+  free: {
+    interviewCreated:
+      Number(process.env.NEXT_PUBLIC_INTERVIEW_CREATED_FREE) ?? 2,
+    interviewTaken: Number(process.env.NEXT_PUBLIC_INTERVIEW_TAKEN_FREE) ?? 3,
+  },
+  premium: {
+    interviewCreated:
+      Number(process.env.NEXT_PUBLIC_INTERVIEW_CREATED_PREMIUM) ?? 5,
+    interviewTaken:
+      Number(process.env.NEXT_PUBLIC_INTERVIEW_TAKEN_PREMIUM) ?? 7,
+  },
+};
