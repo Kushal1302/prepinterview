@@ -2,6 +2,7 @@ import { getServerAuthSessions } from "@/actions/auth";
 import { getInterviewById } from "@/actions/db";
 import Agent from "@/components/Agent";
 import DisplayTechIcons from "@/components/DisplayTechIcons";
+import { subscriptionLimit } from "@/constants";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -11,6 +12,24 @@ const Page = async ({ params }: RouteParams) => {
   const interview = await getInterviewById(id);
   if (!interview) redirect("/");
   const session = await getServerAuthSessions();
+
+  const plan = session?.user.subscription?.plan as "free" | "premium";
+  const userSubscription = session?.user.subscription;
+
+  console.log(session);
+
+  const limitCheck = {
+    free: () =>
+      Number(userSubscription?.interviewsTaken) >=
+      subscriptionLimit.free.interviewTaken,
+    premium: () =>
+      Number(userSubscription?.interviewsTaken) >=
+      subscriptionLimit.premium.interviewTaken,
+  };
+
+  if (plan && limitCheck[plan]()) {
+    return redirect("/upgrade-plan");
+  }
   return (
     <>
       <div className="flex flex-row gap-4 justify-between">
