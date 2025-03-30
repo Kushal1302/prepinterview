@@ -1,5 +1,6 @@
 "use server";
 import { feedbackSchema } from "@/constants";
+import { sendUpgradeEmail } from "@/lib/email";
 import { google } from "@ai-sdk/google";
 import { PrismaClient } from "@prisma/client";
 import { generateObject } from "ai";
@@ -158,7 +159,17 @@ export const upgradePlan = async ({ userId }: { userId: string }) => {
       data: {
         plan: "premium",
       },
+      include: {
+        user: {
+          select: {
+            email: true,
+            name: true,
+          },
+        },
+      },
     });
+    await sendUpgradeEmail(upgradedPlan.user.email!, upgradedPlan.user.name!);
+
     return {
       success: true,
       upgradedPlan,
