@@ -148,3 +148,25 @@ export const getFeedbackByInterviewId = async (
       }
     : null;
 };
+
+export const upgradePlan = async ({ userId }: { userId: string }) => {
+  try {
+    const upgradedPlan = await prisma.subscription.update({
+      where: {
+        userId,
+      },
+      data: {
+        plan: "premium",
+      },
+    });
+    return {
+      success: true,
+      upgradedPlan,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error,
+    };
+  }
+};

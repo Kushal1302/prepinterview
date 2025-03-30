@@ -1,15 +1,22 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { getServerAuthSessions } from "@/actions/auth";
 import { subscriptionLimit } from "@/constants";
+import UpgradeButton from "@/components/UpgradeButton";
+import Script from "next/script";
+import { headers } from "next/headers";
 
 export default async function UpgradePlan() {
   const session = await getServerAuthSessions();
   const interviewsCreated = session?.user.subscription?.interviewsCreated ?? 0;
   const interviewsTaken = session?.user.subscription?.interviewsTaken ?? 0;
-  const plan = (session?.user.subscription?.plan as "free" | "premium") ?? "free";
+  const plan =
+    (session?.user.subscription?.plan as "free" | "premium") ?? "free";
   const planLimit = subscriptionLimit[plan];
+
+  // Get the referrer route (previous page)
+  const headersList = headers();
+  const previousRoute = (await headersList).get("referer") || "Unknown";
 
   return (
     <div className="max-w-3xl mx-auto p-6">
@@ -59,8 +66,12 @@ export default async function UpgradePlan() {
       </div>
 
       <div className="flex justify-center mt-6">
-        <Button className="btn-primary">Upgrade Now</Button>
+        <UpgradeButton session={session} previousRoute={previousRoute} />
       </div>
+      <Script
+        id="razorpay-checkout-js"
+        src="https://checkout.razorpay.com/v1/checkout.js"
+      />
     </div>
   );
 }
