@@ -17,4 +17,4 @@ jobs:
       - name: Build Project
         run: npm run build
       - name: Building done
-        run: echo "Build completed successfully! $NEXTAUTH_URL"
+        run: echo "Build completed successfully! ${NEXTAUTH_URL}"
