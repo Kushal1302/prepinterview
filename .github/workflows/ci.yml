@@ -1,0 +1,16 @@
+name: CI Checks
+on: 
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+            - name: Echo Hello World
+              run: echo "Hello World"
+            - name: Echo Final Process
+              run: echo "Final Process done"
