@@ -1,5 +1,6 @@
 import { getServerAuthSessions } from "@/actions/auth";
 import { getInterviewsByUserId, getLatestInterviews } from "@/actions/db";
+import Chatbot from "@/components/Chatbot";
 import InterviewCard from "@/components/InterviewCard";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -84,6 +85,7 @@ export default async function Home() {
           )}
         </div>
       </section>
+      <Chatbot /> {/* ← Floating chatbot always available */}
     </>
   );
 }
