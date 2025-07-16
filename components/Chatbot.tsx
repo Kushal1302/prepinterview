@@ -57,7 +57,7 @@ export default function Chatbot() {
       {/* Floating button */}
       <div className="fixed bottom-6 right-6 z-50">
         <button
-          className="bg-blue-600 text-white p-4 rounded-full shadow-xl hover:bg-blue-700 transition"
+          className="blue-gradient-dark border  text-white p-4 rounded-full shadow-3xl hover:bg-blue-700 transition"
           onClick={() => setOpen(!open)}
         >
           {open ? <X /> : <Bot />}
@@ -69,11 +69,12 @@ export default function Chatbot() {
         <div className="fixed bottom-20 right-6 w-[340px] md:w-[400px] h-[500px] bg-white rounded-xl shadow-lg z-50 border flex flex-col overflow-hidden">
           {/* Header */}
           <div className="blue-gradient-dark text-white text-center p-3 font-semibold items-center flex justify-center gap-2">
-            <Image src={"/logo.svg"} alt="Logo" height={30} width={30} />{" "}
+            <Image src={"/robot.png"} alt="Logo" height={30} width={30} />{" "}
             Chatbot
           </div>
           2{/* Messages */}
           <div className="flex-1 overflow-y-auto px-4 py-2 space-y-2 bg-gray-50">
+            {!messages.length && <div className="text-sm flex justify-center items-center text-gray-400">Start conversation...</div>}
             {messages.map((msg, i) => {
               const isLast = i === messages.length - 1;
               const isBot = msg.type === "bot";
