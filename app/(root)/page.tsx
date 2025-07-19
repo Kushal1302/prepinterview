@@ -3,11 +3,13 @@ import { getInterviewsByUserId, getLatestInterviews } from "@/actions/db";
 import Chatbot from "@/components/Chatbot";
 import InterviewCard from "@/components/InterviewCard";
 import { Button } from "@/components/ui/button";
+import PublicHomePage from "@/components/ui/PublicHomePage";
 import Image from "next/image";
 import Link from "next/link";
 
 export default async function Home() {
   const session = await getServerAuthSessions();
+  if (!session) return <PublicHomePage />;
 
   const [latestInterviews = [], userInterviews = []] = await Promise.all([
     getLatestInterviews({ userId: session?.user.id ?? "" }),
