@@ -13,7 +13,7 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
       <div className="flex flex-col card py-14 px-10 gap-6 items-center text-center">
         {/* Logo */}
         <div className="flex items-center gap-2">
-          <Image src={"/logo.svg"} width={38} height={32} alt="logo" />
+          <Image src={"/robot.png"} width={38} height={32} alt="logo" />
           <h2 className="text-primary-100 text-2xl font-semibold">IntervueIQ</h2>
         </div>
 

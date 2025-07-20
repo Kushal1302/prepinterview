@@ -4,8 +4,43 @@ import Chatbot from "@/components/Chatbot";
 import InterviewCard from "@/components/InterviewCard";
 import { Button } from "@/components/ui/button";
 import PublicHomePage from "@/components/ui/PublicHomePage";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "IntervueIQ – AI Mock Interviews for Developers & Designers",
+  description:
+    "Practice real-time mock interviews for coding, system design, and behavioral rounds with AI-driven feedback and analytics. Ace your next interview with IntervueIQ.",
+  openGraph: {
+    title: "IntervueIQ – AI Mock Interviews for Developers & Designers",
+    description:
+      "Master interviews with AI-powered mock sessions. Get instant feedback, analytics, and improve confidence across tech interviews.",
+    url: "https://prepinterview-c86r.vercel.app",
+    siteName: "IntervueIQ",
+    type: "website",
+    images: [
+      {
+        url: "https://prepinterview-c86r.vercel.app/robot.png", // replace with actual OG image
+        width: 1200,
+        height: 630,
+        alt: "IntervueIQ – Practice AI Mock Interviews",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "IntervueIQ – AI Mock Interviews for Developers & Designers",
+    description:
+      "Get real-time feedback with AI-powered mock interviews for software roles. Practice coding, system design, and more.",
+    images: ["https://prepinterview-c86r.vercel.app/robot.png"], // match with Open Graph
+  },
+  metadataBase: new URL("https://prepinterview-c86r.vercel.app"), // base URL of your app
+  alternates: {
+    canonical: "https://prepinterview-c86r.vercel.app",
+  },
+};
+
 
 export default async function Home() {
   const session = await getServerAuthSessions();
