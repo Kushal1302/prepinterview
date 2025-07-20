@@ -1,7 +1,7 @@
-# PrepInterview - AI Powered Interview Assistant
+# IntervueIQ - AI Powered Interview Assistant
 
 ## 🚀 About the Project
-PrepInterview is an AI-powered interview assistant designed to help candidates prepare effectively for technical and behavioral interviews. It leverages cutting-edge AI models to generate customized interview questions based on user input and provides a seamless and interactive experience.
+IntervueIQ is an AI-powered interview assistant designed to help candidates prepare effectively for technical and behavioral interviews. It leverages cutting-edge AI models to generate customized interview questions based on user input and provides a seamless and interactive experience.
 
 ## 🛠 Tech Stack
 - **Framework:** Next.js (React, Server Components, API Routes)
@@ -20,7 +20,7 @@ The UI follows a modern and minimalistic approach, ensuring a smooth and intuiti
 
 ## 📂 Project Structure
 ```
-/ PrepInterview
+/ IntervueIQ
 ├── /app             # Next.js App Router
 ├── /components      # Reusable UI Components
 ├── /styles         # Global & Component-specific styles
@@ -41,8 +41,8 @@ The UI follows a modern and minimalistic approach, ensuring a smooth and intuiti
 ### Steps to Run Locally
 1. **Clone the repository**
    ```sh
-   git clone https://github.com/yourusername/PrepInterview.git
-   cd PrepInterview
+   git clone https://github.com/yourusername/IntervueIQ.git
+   cd IntervueIQ
    ```
 2. **Install dependencies**
    ```sh
@@ -113,6 +113,6 @@ This project is licensed under the MIT License.
 
 ## 📬 Contact
 For any queries, feel free to reach out via:
-- **GitHub Issues**: [Repo Issues](https://github.com/Kushal1302/prepinterview/issues)
+- **GitHub Issues**: [Repo Issues](https://github.com/Kushal1302/IntervueIQ/issues)
 - **Email**: kushalmalviya1302@gmail.com
 
